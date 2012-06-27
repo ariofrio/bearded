@@ -1,6 +1,7 @@
 # Codename: Bearded
 
-A WebGL 3D structural editor for biochemical modeling. Please see [the wiki][] for more information. Or check out the latest (incomplete) [demo][].
+A WebGL 3D structural editor for biochemical modeling. [The wiki][] has some more information, 
+but it's mostly to keep my thoughts somewhat organized. Also, check out the latest (incomplete) [demo][].
 
   [the wiki]: https://github.com/ariofrio/bearded/wiki
   [demo]: http://ariofrio.github.com/bearded
