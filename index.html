@@ -1,0 +1,104 @@
+<!doctype>
+<html>
+<head>
+  <title>Bearded Editor Demo</title>
+  <style>
+    * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+
+    /* Look n' Feel */
+    body { background: #fff; }
+    textarea, #canvas { background: #ddd; }
+    textarea { color: #000; border: 0; outline: 0; resize: none; }
+
+    /* Responsive columns */
+    @media screen and (min-width: 500px) {
+      textarea, #canvas {
+        display: block;
+        float: left;
+
+        margin: 0;
+        height: 100%;
+      }
+      textarea {
+        width: 30%;
+      }
+      #canvas {
+        width: 70%;
+      }
+
+      textarea { border-right: 1px solid #bbb; }
+    }
+
+    /* Responsive rows */
+    @media screen and (max-width: 700px) {
+      textarea, #canvas {
+        display: block;
+
+        margin: 0;
+        width: 100%;
+      }
+      textarea {
+        height: 30%;
+      }
+      #canvas {
+        height: 70%;
+      }
+      textarea { border-bottom: 1px solid #bbb; }
+    }
+  </style>
+</head>
+<body>
+  <textarea>var a = CSG.cube({ center: [-0.25, -0.25, -0.25] });
+var b = CSG.sphere({ radius: 1.3, center: [0.25, 0.25, 0.25] });
+return a.union(b);</textarea>
+  <div id="canvas"></div>
+  <script src="Three.js"></script>
+  <script>
+  (function() {
+    "use strict";
+    var $ = function(query) { return document.querySelector(query); }
+    var $$ = function(query) { return document.querySelectorAll(query); }
+    var Three = THREE; // I like my code pretty, please.
+
+    var container = $("#canvas");
+    var scene = new Three.Scene();
+
+    // Camera, lights
+    var camera = new Three.PerspectiveCamera(45, container.clientWidth/container.clientHeight, 0.1, 10000);
+    camera.position.z = 500;
+    camera.position.y = 200;
+    scene.add(camera);
+    var pointLight = new Three.PointLight(0xFFFFFF);
+    pointLight.position.x = 10;
+    pointLight.position.y = 50;
+    pointLight.position.z = 130;
+    scene.add(pointLight);
+
+    // Pretty sphere!
+    var sphere = new Three.Mesh(
+      new Three.CubeGeometry(200, 200, 200),
+      new Three.MeshLambertMaterial({color: 0xCC0000})
+    );
+    scene.add(sphere);
+
+    // Rendering
+    var renderer = new Three.WebGLRenderer();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Responsive resizing
+    window.addEventListener('resize', function() {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+    });
+  })();
+  </script>
+</body>
+</html>
