@@ -44,6 +44,7 @@ require ["csgToThreeGeometry", "thirdparty/Three", "thirdparty/csg",
     mesh = new Three.Mesh geometry,
       new Three.MeshLambertMaterial(color: 0xCC0000)
     scene.add mesh
+  update = update.throttle 250
   textarea.addEventListener 'keyup', update
   textarea.addEventListener 'change', update
   update()

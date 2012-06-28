@@ -40,6 +40,7 @@
       }));
       return scene.add(mesh);
     };
+    update = update.throttle(250);
     textarea.addEventListener('keyup', update);
     textarea.addEventListener('change', update);
     update();
