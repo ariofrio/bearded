@@ -5,6 +5,14 @@ A WebGL 3D structural editor for biochemical modeling. Please see [the wiki][] f
   [the wiki]: https://github.com/ariofrio/bearded/wiki
   [demo]: http://ariofrio.github.com/bearded
 
+## Development
+
+To ensure that CoffeeScript files get compiled as you edit them and to get
+a nice test web server, run:
+
+    gem install asdf
+    make develop
+
 ## Roadmap
 
  - Version 0.1: look at a cube and manipulate the camera
