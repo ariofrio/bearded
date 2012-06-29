@@ -59,7 +59,6 @@
         }
         return _results;
       })();
-      geometry.mergeVertices();
       return geometry;
     };
   });

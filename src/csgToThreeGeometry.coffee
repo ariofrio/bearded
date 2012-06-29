@@ -26,5 +26,4 @@ define ["thirdparty/Three", "thirdparty/sugar"], ->
     geometry.vertices = for v in indexer.unique
       new Three.Vector3(v.pos.x, v.pos.y, v.pos.z)
 
-    geometry.mergeVertices()
     geometry
