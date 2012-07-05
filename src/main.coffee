@@ -1,5 +1,6 @@
-require ["csgToThreeGeometry", "thirdparty/Three", "thirdparty/csg", 
-  "thirdparty/sugar"], (csgToThreeGeometry) ->
+require ["csgto/three", "csgto/gmsh", "thirdparty/Three", "thirdparty/csg", 
+  "thirdparty/sugar", "thirdparty/FileSaver", "thirdparty/BlobBuilder",
+  "thirdparty/Detector"], (csgToThree, csgToGmsh) ->
   Three = THREE
   
   # Might want to use Function.bind(document) instead.
@@ -16,7 +17,7 @@ require ["csgToThreeGeometry", "thirdparty/Three", "thirdparty/csg",
   # Scene, renderer, camera, control, lights
   scene = new Three.Scene
 
-  renderer = new Three.WebGLRenderer
+  renderer = if Detector.webgl then new Three.WebGLRenderer else new Three.CanvasRenderer
   container.appendChild renderer.domElement
 
   camera = new Three.PerspectiveCamera 45, placeholder, 0.01, 1000
@@ -29,18 +30,24 @@ require ["csgToThreeGeometry", "thirdparty/Three", "thirdparty/csg",
   keyLight.position.set 7, 10, 0
   scene.add keyLight
   fillLight = new Three.DirectionalLight 0x666666
-  fillLight.position.set 0, 4, 7
+  fillLight.position.set -5, 7, 4
   scene.add fillLight
+  bottomLight = new Three.DirectionalLight 0x666666
+  bottomLight.position.set 7, -5, 4
+  scene.add bottomLight
+  backLight = new Three.DirectionalLight 0xFFFFFF
+  backLight.position.set -5, -7, -4
+  scene.add backLight
 
   # Live code
   mesh = null
+  solid = null
   update = ->
     console.log "update"
     solid = new Function(textarea.value)()
 
     scene.remove mesh if mesh?
-    geometry = csgToThreeGeometry solid
-    #geometry = new Three.CubeGeometry 1, 1, 1
+    geometry = csgToThree solid
     mesh = new Three.Mesh geometry,
       new Three.MeshLambertMaterial(color: 0xCC0000)
     scene.add mesh
@@ -62,3 +69,10 @@ require ["csgToThreeGeometry", "thirdparty/Three", "thirdparty/csg",
     controls.update()
     renderer.render scene, camera
   render()
+
+  # Saving
+  $("#save").addEventListener 'click', ->
+    bb = new BlobBuilder
+    bb.append csgToGmsh(solid)
+    saveAs bb.getBlob("text/plain;charset=utf-8"), "geometry.geo"
+
