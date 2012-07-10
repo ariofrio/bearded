@@ -4,7 +4,7 @@
   define(["../indexer", "thirdparty/sugar"], function(Indexer) {
     var csgToGmsh;
     return csgToGmsh = function(solid) {
-      var data, i, index, key, lineIndexer, lines, name, objects, output, pointIndexer, points, polygon, v, values, _i, _j, _k, _len, _len1, _ref, _ref1;
+      var data, i, id, key, lineIds, lineIndexer, name, object, otherId, output, pointIds, pointIndexer, polygon, thisId, x, y, z, _i, _j, _k, _l, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3, _results;
       data = {
         point: [],
         line: [],
@@ -18,43 +18,51 @@
       _ref = solid.toPolygons();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         polygon = _ref[_i];
-        points = (function() {
-          var _j, _len1, _ref1, _results;
+        pointIds = (function() {
+          var _j, _len1, _ref1, _ref2, _results;
           _ref1 = polygon.vertices;
           _results = [];
           for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            v = _ref1[_j];
-            if (v.pos === void 0) {
-              console.log(point, i);
-            }
-            _results.push(pointIndexer.add([v.pos.x, v.pos.y, v.pos.z]));
+            _ref2 = _ref1[_j].pos, x = _ref2.x, y = _ref2.y, z = _ref2.z;
+            _results.push(1 + pointIndexer.add([x, y, z]));
           }
           return _results;
         })();
-        lines = [];
-        lines.push(lineIndexer.add([points[points.length - 1], points[0]]));
-        for (i = _j = 1, _ref1 = points.length; 1 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 1 <= _ref1 ? ++_j : --_j) {
-          lines.push(lineIndexer.add([points[i - 1], points[i]]));
-        }
+        lineIds = (function() {
+          var _j, _len1, _results;
+          _results = [];
+          for (i = _j = 0, _len1 = pointIds.length; _j < _len1; i = ++_j) {
+            thisId = pointIds[i];
+            otherId = i === 0 ? pointIds[pointIds.length - 1] : pointIds[i - 1];
+            if (thisId < otherId) {
+              _results.push(1 + lineIndexer.add([thisId, otherId]));
+            } else {
+              _results.push(-(1 + lineIndexer.add([otherId, thisId])));
+            }
+          }
+          return _results;
+        })();
+        data.lineLoop.push(lineIds);
         data.planeSurface.push([data.lineLoop.length]);
-        data.lineLoop.push(lines);
       }
       data.point = pointIndexer.unique;
       data.line = lineIndexer.unique;
+      data.surfaceLoop.push((function() {
+        _results = [];
+        for (var _j = 1, _ref1 = data.planeSurface.length; 1 <= _ref1 ? _j <= _ref1 : _j >= _ref1; 1 <= _ref1 ? _j++ : _j--){ _results.push(_j); }
+        return _results;
+      }).apply(this));
       data.volume.push([data.surfaceLoop.length]);
-      data.surfaceLoop.push(data.planeSurface);
       output = [];
-      for (key in data) {
-        objects = data[key];
+      _ref2 = ['point', 'line', 'lineLoop', 'planeSurface', 'surfaceLoop', 'volume'];
+      for (_k = 0, _len1 = _ref2.length; _k < _len1; _k++) {
+        key = _ref2[_k];
         name = key.spacify().capitalize(true);
-        for (index = _k = 0, _len1 = objects.length; _k < _len1; index = ++_k) {
-          values = objects[index];
-          if (key === 'point') {
-            values = values.join(', ');
-          } else {
-            values = values.join(', ');
-          }
-          output += "" + name + "(" + index + ") = {" + values + "};\n";
+        _ref3 = data[key];
+        for (id = _l = 0, _len2 = _ref3.length; _l < _len2; id = ++_l) {
+          object = _ref3[id];
+          object = object.join(', ');
+          output += "" + name + "(" + (id + 1) + ") = {" + object + "};\n";
         }
       }
       return output;

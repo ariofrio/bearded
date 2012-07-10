@@ -7,7 +7,7 @@ define [], ->
       @map = {}
     add: (obj) ->
       key = JSON.stringify(obj)
-      if key not in @map
+      if key not of @map
         @map[key] = @unique.length
         @unique.push obj
       @map[key]
