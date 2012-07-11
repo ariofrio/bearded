@@ -5,7 +5,7 @@ MOCHAFLAGS=--compilers coffee:coffee-script --require should --require sugar
 test:
 	find src -name '*_test.coffee' | xargs mocha $(MOCHAFLAGS)
 
-test-watch:
+watch:
 	find src -name '*_test.coffee' | xargs mocha $(MOCHAFLAGS) --watch
 
 develop:
