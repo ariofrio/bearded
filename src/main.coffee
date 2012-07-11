@@ -1,5 +1,6 @@
-require ["csgto/three", "csgto/gmsh", "thirdparty/Three", "thirdparty/csg", 
-  "thirdparty/sugar", "thirdparty/FileSaver", "thirdparty/BlobBuilder",
+require ["csgto/three", "csgto/gmsh",
+  "thirdparty/sugar", "thirdparty/Three", "thirdparty/csg", 
+  "thirdparty/FileSaver", "thirdparty/BlobBuilder",
   "thirdparty/Detector"], (csgToThree, csgToGmsh) ->
   Three = THREE
   
