@@ -1,4 +1,4 @@
-define ["../indexer", "thirdparty/Three", "thirdparty/sugar"], (Indexer) ->
+define ["./indexer", "thirdparty/Three", "thirdparty/sugar"], (Indexer) ->
   Three = THREE
 
   csgToThree = (solid) ->

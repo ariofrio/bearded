@@ -1,4 +1,6 @@
-define ["../indexer", "thirdparty/sugar"], (Indexer) ->
+define = @define || require('amdefine')(module)
+
+define ["./indexer"], (Indexer) ->
   csgToGmsh = (solid) ->
     # Keep the geometry objects in one place. Each kind of object is
     # represented by a list, where index = id - 1 and the values are the

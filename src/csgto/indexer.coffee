@@ -1,6 +1,6 @@
-`if(typeof define!=='function'){var define = require('amdefine')(module)}`
+define = @define || require('amdefine')(module)
 
-define [], ->
+define ->
   # Stolen and adapted from http://evanw.github.com/lightgl.js/docs/mesh.html
   class Indexer
     constructor: ->
