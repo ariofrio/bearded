@@ -1,5 +1,9 @@
 # Codename: Bearded
 
+**This project has been abandoned. Much of the code is being used in [Goatee][], a Gmsh web frontend.**
+
+  [goatee]: https://github.com/ariofrio/goatee
+
 A WebGL 3D structural editor for biochemical modeling. [The wiki][] has some more information, 
 but it's mostly to keep my thoughts somewhat organized. Also, check out the latest (incomplete) [demo][].
 
